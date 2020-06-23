@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>排序</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        ul {
+            list-style: none;
+            display: flex;
+        }
+
+        li {
+            margin: 0 10px;
+            border: 1px solid rgb(224, 170, 68);
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+
+        .btn {
+            display: flex;
+            margin-top: 20px;
+        }
+
+        .btn>button {
+            margin: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <ul>
+        <li>1</li>
+        <li>6</li>
+        <li>4</li>
+        <li>5</li>
+        <li>2</li>
+        <li>3</li>
+        <li>9</li>
+        <li>7</li>
+        <li>8</li>
+    </ul>
+    <div class="btn">
+        <button>升序</button>
+        <button>降序</button>
+        <button>随机</button>
+    </div>
+    <script>
+        let aCon = document.querySelectorAll("ul>li"),
+            btn = document.querySelectorAll(".btn>button"),
+            oUl=document.querySelector("ul")
+        var str=``
+        let arr = []
+        aCon.forEach((item, index) => {
+            arr.push(Number(item.innerText))
+        })
+        btn.forEach((item, index) => {
+            item.addEventListener("click", function (ev) {   
+                switch (item.innerText) {
+                    case "升序":
+                    bubbleSort(arr,-1)
+                    str=``
+                    arr.forEach((item,index)=>{
+                        str+=`<li>${item}</li>`
+                    })
+                    oUl.innerHTML=str
+                        break;
+                    case "降序":
+                    bubbleSort(arr, 1)
+                    str=``
+                    arr.forEach((item,index)=>{
+                        str+=`<li>${item}</li>`
+                    })
+                    oUl.innerHTML=str
+                        break;
+                    case "随机":
+                    randomSort(arr)
+                    str=``
+                    arr.forEach((item,index)=>{
+                        str+=`<li>${item}</li>`
+                    })
+                    oUl.innerHTML=str
+                        break
+                }
+            })
+
+        })
+
+        //随机函数
+        function random(max,min){
+            return parseInt(Math.random()*(max-min)+min)
+        }
+        //冒泡排序
+        function bubbleSort(arr, index) {
+            //降序
+            if (index == 1) {
+                for (let i = 0; i < arr.length; i++) {
+                    for (let j = i + 1; j < arr.length; j++) {
+                        if (arr[i] < arr[j]) {
+                            [arr[i], arr[j]] = [arr[j], arr[i]]
+                        }
+                    }
+                }
+                return arr
+            }
+            //升序
+            if (index == -1) {
+                for (let i = 0; i < arr.length; i++) {
+                    for (let j = i + 1; j < arr.length; j++) {
+                        if (arr[i] > arr[j]) {
+                            [arr[i], arr[j]] = [arr[j], arr[i]]
+                        }
+                    }
+                }
+                return arr
+            }
+        }
+        
+        //数组随机排序
+        function randomSort(arr){
+            let rand
+            for (let i = 0; i < arr.length; i++) {
+                rand=random(0,arr.length)
+                let tmp = arr[rand]
+                arr[rand]=arr[i]
+                arr[i]=tmp
+            }
+            return arr
+        }
+    
+        //快速排序
+        function qucikSort(arr){
+            if (arr.length<=1) {
+                return arr
+            }
+            //取数组中间值，可以随意取
+            let rand =Math.floor(arr.length/2)
+            let pivotValue = arr[rand] 
+
+            //定义分割后的左数组区域和右数组区域
+            let leftValue=[],rightValue=[]
+
+            //数组切割
+            arr.splice(rand,1)
+
+            //向左右数组中添加值，此处写的是升序，降序同理
+            for (let i = 0; i < arr.length; i++) {
+                if (arr[i]<pivotValue) {
+                    leftValue.push(arr[i])
+                }else{
+                    rightValue.push(arr[i])
+                }
+            }
+
+            //重复执行此函数，直至arr的长度被分割到1为止
+            return qucikSort(leftValue).concat(pivotValue,qucikSort(rightValue))
+        }
+        // let a=qucikSort(arr);//1,2,3,4,5,6,7,8,9
+        
+    </script>
+</body>
+
+</html>
